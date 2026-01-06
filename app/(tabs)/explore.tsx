@@ -94,6 +94,9 @@ export default function TabTwoScreen() {
           ),
         })}
       </Collapsible>
+      <Collapsible title="Hello from Fleshka!">
+        <ThemedText>GoldTube will be here...</ThemedText>
+      </Collapsible>
     </ParallaxScrollView>
   );
 }
