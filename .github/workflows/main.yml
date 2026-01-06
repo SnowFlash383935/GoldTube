@@ -16,12 +16,10 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '24'
-        # Убираем кэширование, так как нет lock файла
+        node-version: '18'
         
     - name: Install Expo CLI and dependencies
       run: |
-        npm install -g @expo/cli
         npm install
         
     - name: Export Expo app for web
@@ -29,19 +27,25 @@ jobs:
       
     - name: Create vercel branch and push dist folder
       run: |
-        # Сохраняем текущие изменения
+        # Настройка git
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         
         # Создаем новую ветку vercel
         git checkout -b vercel
         
-        # Удаляем все файлы кроме dist
-        find . -maxdepth 1 ! -name 'dist' ! -name '.git' -exec rm -rf {} +
+        # Создаем временную директорию и копируем туда dist
+        mkdir -p ../temp_dist
+        cp -r dist/* ../temp_dist/
         
-        # Перемещаем содержимое dist в корень
-        mv dist/* .
-        rmdir dist
+        # Удаляем все файлы в текущей директории кроме .git
+        find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
+        
+        # Копируем содержимое dist в корень
+        cp -r ../temp_dist/* .
+        
+        # Удаляем временную директорию
+        rm -rf ../temp_dist
         
         # Добавляем все файлы и коммитим
         git add .
