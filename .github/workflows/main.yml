@@ -2,8 +2,8 @@ name: Deploy to Vercel Branch
 
 on:
   push:
-    branches: [main]
-  workflow_dispatch:
+    branches: [main] # или другая ветка, с которой хотите запускать деплой
+  workflow_dispatch: # позволяет запускать вручную
 
 jobs:
   deploy:
@@ -17,8 +17,7 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '18'
-        # Отключаем кэширование, так как нет lock файла
-        cache: 'none'
+        # Убираем кэширование, так как нет lock файла
         
     - name: Install Expo CLI and dependencies
       run: |
@@ -30,23 +29,23 @@ jobs:
       
     - name: Create vercel branch and push dist folder
       run: |
+        # Сохраняем текущие изменения
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         
+        # Создаем новую ветку vercel
         git checkout -b vercel
         
-        # Удаляем все файлы кроме dist и .git
+        # Удаляем все файлы кроме dist
         find . -maxdepth 1 ! -name 'dist' ! -name '.git' -exec rm -rf {} +
         
         # Перемещаем содержимое dist в корень
-        if [ -d "dist" ] && [ "$(ls -A dist)" ]; then
-          mv dist/* .
-          rmdir dist
-        fi
+        mv dist/* .
+        rmdir dist
         
         # Добавляем все файлы и коммитим
         git add .
         git commit -m "Deploy to Vercel: ${{ github.sha }}"
         
-        # Пушим в ветку vercel
+        # Пушим в ветку vercel (с флагом force для перезаписи)
         git push -f origin vercel
