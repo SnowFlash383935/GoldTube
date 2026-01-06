@@ -22,7 +22,7 @@ jobs:
     - name: Install Expo CLI and dependencies
       run: |
         npm install -g @expo/cli
-        npm install
+        npm install --no-package-lock
         
     - name: Export Expo app for web
       run: npx expo export --platform web
