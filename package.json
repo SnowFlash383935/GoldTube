@@ -39,7 +39,8 @@
     "react-native-web": "~0.21.0",
     "@react-native/assets-registry": "~0.83.1",
     "babel-plugin-transform-inline-environment-variables": "~0.4.4",
-    "nativewind": "~4.2.1"
+    "nativewind": "~4.2.1",
+    "babel-plugin-module-resolver": "~5.0.2"
   },
   "devDependencies": {
     "@types/react": "~19.1.0",
