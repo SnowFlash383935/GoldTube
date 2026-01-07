@@ -5,22 +5,16 @@ module.exports = function (api) {
     plugins: [
       'nativewind/babel',
       'react-native-reanimated/plugin',
-      'transform-inline-environment-variables',
       [
         'module-resolver',
         {
           root: ['./'],
           alias: {
             '@': './src',
-            'react-native-vector-icons': '@expo/vector-icons',
+            'react-native-vector-icons': '@expo/vector-icons'
           },
         },
       ],
     ],
-    env: {
-      production: {
-        plugins: ['react-native-paper/babel'],
-      },
-    },
   }
 }
